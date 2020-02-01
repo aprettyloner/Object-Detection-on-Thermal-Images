@@ -51,7 +51,6 @@ def create_modules(module_defs, img_size, arc):
 
         elif mdef['type'] == 'upsample':
             modules = nn.Upsample(scale_factor=int(mdef['stride']), mode='nearest')
-            # modules = Upsample(scale_factor=int(mdef['stride']))
 
         elif mdef['type'] == 'route':  # nn.Sequential() placeholder for 'route' layer
             layers = [int(x) for x in mdef['layers'].split(',')]
@@ -142,16 +141,6 @@ class Mish(nn.Module):  # https://github.com/digantamisra98/Mish
         return x.mul_(F.softplus(x).tanh())
 
 
-class Upsample(nn.Module):
-    def __init__(self, scale_factor):
-        super(Upsample, self).__init__()
-        self.scale = scale_factor
-
-    def forward(self, x):
-        h, w = x.shape[2:]
-        return F.interpolate(x, size=(int(h * self.scale), int(w * self.scale)))
-
-
 class YOLOLayer(nn.Module):
     def __init__(self, anchors, nc, img_size, yolo_index, arc):
         super(YOLOLayer, self).__init__()
@@ -185,19 +174,18 @@ class YOLOLayer(nn.Module):
 
         elif ONNX_EXPORT:
             # Constants CAN NOT BE BROADCAST, ensure correct shape!
-            m = self.na * self.nx * self.ny
-            ngu = self.ng.repeat((1, m, 1))
-            grid_xy = self.grid_xy.repeat((1, self.na, 1, 1, 1)).view(1, m, 2)
-            anchor_wh = self.anchor_wh.repeat((1, 1, self.nx, self.ny, 1)).view(1, m, 2) / ngu
+            ngu = self.ng.repeat((1, self.na * self.nx * self.ny, 1))
+            grid_xy = self.grid_xy.repeat((1, self.na, 1, 1, 1)).view((1, -1, 2))
+            anchor_wh = self.anchor_wh.repeat((1, 1, self.nx, self.ny, 1)).view((1, -1, 2)) / ngu
 
-            p = p.view(m, 5 + self.nc)
+            p = p.view(-1, 5 + self.nc)
             xy = torch.sigmoid(p[..., 0:2]) + grid_xy[0]  # x, y
             wh = torch.exp(p[..., 2:4]) * anchor_wh[0]  # width, height
             p_conf = torch.sigmoid(p[:, 4:5])  # Conf
-            p_cls = F.softmax(p[:, 5:5 + self.nc], 1) * p_conf  # SSD-like conf
+            p_cls = F.softmax(p[:, 5:85], 1) * p_conf  # SSD-like conf
             return torch.cat((xy / ngu[0], wh, p_conf, p_cls), 1).t()
 
-            # p = p.view(1, m, 5 + self.nc)
+            # p = p.view(1, -1, 5 + self.nc)
             # xy = torch.sigmoid(p[..., 0:2]) + grid_xy  # x, y
             # wh = torch.exp(p[..., 2:4]) * anchor_wh  # width, height
             # p_conf = torch.sigmoid(p[..., 4:5])  # Conf
@@ -279,7 +267,7 @@ class Darknet(nn.Module):
         elif ONNX_EXPORT:
             output = torch.cat(output, 1)  # cat 3 layers 85 x (507, 2028, 8112) to 85 x 10647
             nc = self.module_list[self.yolo_layers[0]].nc  # number of classes
-            return output[5:5 + nc].t(), output[0:4].t()  # ONNX scores, boxes
+            return output[5:5 + nc].t(), output[:4].t()  # ONNX scores, boxes
         else:
             io, p = list(zip(*output))  # inference output, training output
             return torch.cat(io, 1), p
