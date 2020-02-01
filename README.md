@@ -45,6 +45,9 @@ Install COCO: ``` bash yolov3/data/get_coco_dataset.sh```, then add FLIR images 
 
 $  ```python3 detect.py --data data/custom.data --cfg cfg/yolov3-spp-r.cfg --weights weights/custom.pt```
 
+<strong>Modified config in yolov3-spp-r.cfg file; Leverages Spatial Pyramid Pooling with Ultralytics YOLOv3 for better feature extraction and higher precision on thermal images:</strong>
+![](1_h-SYoymeVq5hSK3Vv3C-Ig.png)
+
 - At the root of the project, you will then see a folder named output get generated with annotated images and bounding boxes around the objects within the images you chose for the ``data/samples`` folder.
 
 - To get metrics, go back into command line at root of project and run: 
