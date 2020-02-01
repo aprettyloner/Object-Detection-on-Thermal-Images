@@ -51,12 +51,12 @@ If Artifical Intelligence Applications are important to you or your business, pl
 
 #### Consulting ideas on which this project could be forked to for real-word use cases:
 
-- Object Classification in Thermal Images using Convolutional Neural Networks for Search and Rescue Missions with Unmanned Aerial Systems.
+- Object Classification in Thermal Images using Convolutional Neural Networks for Search and Rescue Missions with Unmanned Aerial Systems
 
-- Defense and Aerospace: Detecting IDEs in live combat war zones.\
+- Defense and Aerospace: Detecting IDEs in live combat war zones
 
-- Autonmous Cars or Drones.
+- Autonmous Cars or Drones
 
-- Electrical grid monitoring.
+- Electrical grid monitoring
 
 
