@@ -47,7 +47,7 @@ $ ```python3 test.py --cfg cfg/yolov3-spp-r.cfg --weights weights/custom.pt --da
 
 
 #### Need consulting to better understand computer vision implmentation for better business outcomes?
-If ML/AI for your Industrial IoT Applications is important to you or your business, please get in [touch](https://www.linkedin.com/in/computer-vision-engineer/) or email ```joehoeller@gmail.com```.
+If Artifical Intelligence Applications are important to you or your business, please get in [touch](https://www.linkedin.com/in/computer-vision-engineer/) or email ```joehoeller@gmail.com```.
 
 #### Consulting ideas on this project for real-word use cases
 
