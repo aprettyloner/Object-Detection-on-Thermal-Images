@@ -62,7 +62,7 @@ If Artifical Intelligence Applications are important to you or your business, pl
 
 - Defense and Aerospace: Detecting IDEs in live combat war zones
 
-- Autonmous Cars or Drones
+- Autonomous Cars or Drones
 
 - Electrical grid monitoring
 
