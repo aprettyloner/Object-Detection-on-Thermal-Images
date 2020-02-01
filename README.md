@@ -1,5 +1,5 @@
 ### Object-Detection-on-Thermal-Images
-Robust Object Classification of Occluded Objects in Forward Looking Infrared (FLIR) Cameras using Ultralytics YOLOv3 and Dark Chocolate. Medium Article that compliments code repo: [Article on Medium](https://medium.com/@joehoeller/object-detection-on-thermal-images-f9526237686a)
+Robust Object Classification of Occluded Objects in Forward Looking Infrared (FLIR) Cameras using Ultralytics YOLOv3 and Dark Chocolate. <strong><em>Medium Article that compliments code repo:</em></strong> [Article on Medium](https://medium.com/@joehoeller/object-detection-on-thermal-images-f9526237686a)
 
 #### Downloads needed to run codebase
   
