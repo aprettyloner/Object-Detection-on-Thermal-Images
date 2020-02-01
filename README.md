@@ -8,6 +8,8 @@ Robust Object Classification of Occluded Objects in Forward Looking Infrared (FL
    2. FLIR Thermal Images Dataset: [Download]https://www.flir.com/oem/adas/adas-dataset-form/
 
    3. Go into ```/data``` folder and unzip ```labels.zip```
+   
+   4. Addt'l instructions on how to run [Ultralytics Yolov3](https://github.com/ultralytics/yolov3)
 
 #### Instructions
 
