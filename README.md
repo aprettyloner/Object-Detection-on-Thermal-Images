@@ -5,9 +5,9 @@ Robust Object Classification of Occluded Objects in Forward Looking Infrared (FL
 
 #### Production Grade Results
 
-   1. mAP: 0.961 
-   2. Recall 0.922 
-   3. F1: 0.857
+   1. <strong>mAP:</strong> ```0.961```
+   2. <strong>Recall:</strong> ```0.922```
+   3. <strong>F1:</strong> ```0.857```
    
 ![](https://github.com/joehoeller/Object-Detection-on-Thermal-Images/blob/master/results.png)
 
