@@ -26,7 +26,7 @@ Robust Object Classification of Occluded Objects in Forward Looking Infrared (FL
 #### Install & Run Code:
 
 After download is complete run pip install requirements, or click into the requriements.txt file for the Anaconda commands.
-Install COCO: ``` bash yolov3/data/get_coco_dataset.sh```, then add FLIR images to: ```/coco/images/FLIR_Dataset``` where you. Select any random grouping of non-annotated images, (ctrl-click any random sample of 5 to 10, or 20 if you like), copy them, and them paste them into data/samples folder.
+Install COCO: ``` bash yolov3/data/get_coco_dataset.sh```, then add FLIR images to: ```/coco/images/FLIR_Dataset```. Select any random grouping of non-annotated images, (ctrl-click any random sample of 5 to 10, or 20 if you like), copy them, and them paste them into data/samples folder.
 
 - Go back to the root of the project where the requirements.txt file is and open a command prompt, run the following:
 ```python3 detect.py --data data/custom.data --cfg cfg/yolov3-spp-r.cfg --weights weights/custom.pt```
