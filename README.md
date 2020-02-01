@@ -50,6 +50,8 @@ If ML/AI for your Industrial IoT Applications is important to you or your busine
 
 - Object Classification in Thermal Images using Convolutional Neural Networks for Search and Rescue Missions with Unmanned Aerial Systems.
 
-- Defense and Aerospace: Detecting IDEs in live combat war zones.
+- Defense and Aerospace: Detecting IDEs in live combat war zones.\
+
+- Autonmous Cars or Drones.
 
 
