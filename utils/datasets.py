@@ -255,7 +255,7 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
 
 class LoadImagesAndLabels(Dataset):  # for training/testing
-    def __init__(self, path, img_size=416, batch_size=16, augment=False, hyp=None, rect=False, image_weights=False,
+    def __init__(self, path, img_size=416, batch_size=16, augment=False, hyp=None, rect=True, image_weights=False,
                  cache_labels=False, cache_images=False):
         path = str(Path(path))  # os-agnostic
         with open(path, 'r') as f:
@@ -319,7 +319,7 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
             self.labels = [np.zeros((0, 5))] * n
             extract_bounding_boxes = False
             create_datasubset = False
-            pbar = tqdm(self.label_files, desc='Caching labels')
+            pbar = tqdm(self.label_files, desc='Reading labels')
             nm, nf, ne, ns = 0, 0, 0, 0  # number missing, number found, number empty, number datasubset
             for i, file in enumerate(pbar):
                 try:
@@ -370,17 +370,20 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                     ne += 1  # print('empty labels for image %s' % self.img_files[i])  # file empty
                     # os.system("rm '%s' '%s'" % (self.img_files[i], self.label_files[i]))  # remove
 
-                pbar.desc = 'Caching labels (%g found, %g missing, %g empty for %g images)' % (nf, nm, ne, n)
+                pbar.desc = 'Reading labels (%g found, %g missing, %g empty for %g images)' % (nf, nm, ne, n)
             assert nf > 0, 'No labels found. Recommend correcting image and label paths.'
 
-        # Cache images into memory for faster training (WARNING: Large datasets may exceed system RAM)
-        if cache_images:  # if training
-            gb = 0  # Gigabytes of cached images
-            pbar = tqdm(range(len(self.img_files)), desc='Caching images')
-            for i in pbar:  # max 10k images
-                self.imgs[i] = load_image(self, i)
-                gb += self.imgs[i].nbytes
-                pbar.desc = 'Caching images (%.1fGB)' % (gb / 1E9)
+        # Cache images into memory for faster training (~5GB)
+        if cache_images and augment:  # if training
+            for i in tqdm(range(min(len(self.img_files), 10000)), desc='Reading images'):  # max 10k images
+                img_path = self.img_files[i]
+                img = cv2.imread(img_path)  # BGR
+                assert img is not None, 'Image Not Found ' + img_path
+                r = self.img_size / max(img.shape)  # size ratio
+                if self.augment and r < 1:  # if training (NOT testing), downsize to inference shape
+                    h, w = img.shape[:2]
+                    img = cv2.resize(img, (int(w * r), int(h * r)), interpolation=cv2.INTER_LINEAR)  # or INTER_AREA
+                self.imgs[i] = img
 
         # Detect corrupted images https://medium.com/joelthchao/programmatically-detect-corrupted-image-8c1b2006c3d3
         detect_corrupted_images = False
@@ -507,10 +510,10 @@ def load_image(self, index):
         img_path = self.img_files[index]
         img = cv2.imread(img_path)  # BGR
         assert img is not None, 'Image Not Found ' + img_path
-        r = self.img_size / max(img.shape)  # resize image to img_size
-        if self.augment and (r != 1):  # always resize down, only resize up if training with augmentation
+        r = self.img_size / max(img.shape)  # size ratio
+        if self.augment:  # if training (NOT testing), downsize to inference shape
             h, w = img.shape[:2]
-            return cv2.resize(img, (int(w * r), int(h * r)), interpolation=cv2.INTER_LINEAR)  # _LINEAR fastest
+            img = cv2.resize(img, (int(w * r), int(h * r)), interpolation=cv2.INTER_LINEAR)  # _LINEAR fastest
     return img
 
 
@@ -573,11 +576,9 @@ def load_mosaic(self, index):
     # Concat/clip labels
     if len(labels4):
         labels4 = np.concatenate(labels4, 0)
-        # np.clip(labels4[:, 1:] - s / 2, 0, s, out=labels4[:, 1:])  # use with center crop
-        np.clip(labels4[:, 1:], 0, 2 * s, out=labels4[:, 1:])  # use with random_affine
+        np.clip(labels4[:, 1:], 0, 2 * s, out=labels4[:, 1:])
 
     # Augment
-    # img4 = img4[s // 2: int(s * 1.5), s // 2:int(s * 1.5)]  # center crop (WARNING, requires box pruning)
     img4, labels4 = random_affine(img4, labels4,
                                   degrees=self.hyp['degrees'],
                                   translate=self.hyp['translate'],
@@ -758,28 +759,24 @@ def reduce_img_size(path='../data/sm4/images', img_size=1024):  # from utils.dat
             print('WARNING: image failure %s' % f)
 
 
-def convert_images2bmp():  # from utils.datasets import *; convert_images2bmp()
-    # Save images
-    formats = [x.lower() for x in img_formats] + [x.upper() for x in img_formats]
-    # for path in ['../coco/images/val2014', '../coco/images/train2014']:
-    for path in ['../data/sm4/images', '../data/sm4/background']:
-        create_folder(path + 'bmp')
-        for ext in formats:  # ['.bmp', '.jpg', '.jpeg', '.png', '.tif', '.dng']
-            for f in tqdm(glob.glob('%s/*%s' % (path, ext)), desc='Converting %s' % ext):
-                cv2.imwrite(f.replace(ext.lower(), '.bmp').replace(path, path + 'bmp'), cv2.imread(f))
+def convert_images2bmp():
+    # cv2.imread() jpg at 230 img/s, *.bmp at 400 img/s
+    for path in ['../coco/images/val2014/', '../coco/images/train2014/']:
+        folder = os.sep + Path(path).name
+        output = path.replace(folder, folder + 'bmp')
+        create_folder(output)
 
-    # Save labels
-    # for path in ['../coco/trainvalno5k.txt', '../coco/5k.txt']:
-    for file in ['../data/sm4/out_train.txt', '../data/sm4/out_test.txt']:
-        with open(file, 'r') as f:
-            lines = f.read()
-            # lines = f.read().replace('2014/', '2014bmp/')  # coco
-            lines = lines.replace('/images', '/imagesbmp')
-            lines = lines.replace('/background', '/backgroundbmp')
-        for ext in formats:
-            lines = lines.replace(ext, '.bmp')
-        with open(file.replace('.txt', 'bmp.txt'), 'w') as f:
-            f.write(lines)
+        for f in tqdm(glob.glob('%s*.jpg' % path)):
+            save_name = f.replace('.jpg', '.bmp').replace(folder, folder + 'bmp')
+            cv2.imwrite(save_name, cv2.imread(f))
+
+    for label_path in ['../coco/trainvalno5k.txt', '../coco/5k.txt']:
+        with open(label_path, 'r') as file:
+            lines = file.read()
+        lines = lines.replace('2014/', '2014bmp/').replace('.jpg', '.bmp').replace(
+            '/Users/glennjocher/PycharmProjects/', '../')
+        with open(label_path.replace('5k', '5k_bmp'), 'w') as file:
+            file.write(lines)
 
 
 def imagelist2folder(path='data/coco_64img.txt'):  # from utils.datasets import *; imagelist2folder()
