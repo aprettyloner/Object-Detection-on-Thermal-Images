@@ -35,13 +35,17 @@ $  ```python3 detect.py --data data/custom.data --cfg cfg/yolov3-spp-r.cfg --wei
 - At the root of the project, you will then see a folder named output get generated with annotated images and bounding boxes around the objects within the images you chose for the ``data/samples`` folder.
 
 - To get metrics, go back into command line at root of project and run: 
+
   $ ```python (python cmd prompt)```
+  
   $ ```from utils import utils```
+  
   $ ```utils.plot_results()```
+  
 
 You will then see an image of charts get generated at root of project called results.png
 
-To get class-wise scores run ( * Note that ```-r``` /yolov3-spp-r.cfg is the altered CNN architecture):
+- To get class-wise scores run ( * Note that ```-r``` /yolov3-spp-r.cfg is the altered CNN architecture):
 
 $ ```python3 test.py --cfg cfg/yolov3-spp-r.cfg --weights weights/custom.pt --data data/custom.data```
 
