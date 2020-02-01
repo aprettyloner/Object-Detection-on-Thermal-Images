@@ -15,7 +15,7 @@ Robust Object Classification of Occluded Objects in Forward Looking Infrared (FL
   
    1. Download pre-trained weights here: [link](https://drive.google.com/drive/folders/1dV0OmvG4eZFtnh5WF0mby-jhkVy-HVco?usp=sharing)
    
-   2. FLIR Thermal Images Dataset: [Download]https://www.flir.com/oem/adas/adas-dataset-form/
+   2. FLIR Thermal Images Dataset: [Download](https://www.flir.com/oem/adas/adas-dataset-form/)
 
    3. Go into ```/data``` folder and unzip ```labels.zip```
    
