@@ -23,7 +23,7 @@ Robust Object Classification of Occluded Objects in Forward Looking Infrared (FL
 
 #### Instructions
 
-- Must have NVIDIA GPUs with CUDA X installed.
+- Must have NVIDIA GPUs with Turing Architecture, Ubuntu and CUDA X installed if you want to reproduce results.
 
 - Add the data provided by FLIR to a folder path called ```/coco/FLIR_Dataset```. 
 
