@@ -76,10 +76,11 @@ If Artifical Intelligence Applications are important to you or your business, pl
 
 - Object Classification in Thermal Images using Convolutional Neural Networks for Search and Rescue Missions with Unmanned Aerial Systems
 
-- Defense and Aerospace: Detecting IDEs in live combat war zones
+- Defense and Aerospace: Detecting IEDs (Improvised Explosive Devices) in live combat war zones
 
-- Autonomous Cars or Drones
+- Autonomous Cars or Drones, personal or commercial
 
 - Electrical grid monitoring
+
 
 
