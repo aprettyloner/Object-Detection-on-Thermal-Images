@@ -25,11 +25,11 @@ Robust Object Classification of Occluded Objects in Forward Looking Infrared (FL
 
 - Must have NVIDIA GPUs with CUDA X installed.
 
-- The data provided by FLIR is included in the folder ```/coco/FLIR_Dataset```. 
+- Add the data provided by FLIR to a folder path called ```/coco/FLIR_Dataset```. 
 
 - Place the custom pre-trained weights you downloaded from above into: ```/weights/*.pt``` 
 
-- Converted labels from the [Dark Chocolate](https://github.com/joehoeller/Dark-Chocolate) repo are located in data/labels.
+- Converted labels from [Dark Chocolate](https://github.com/joehoeller/Dark-Chocolate) are located in data/labels, which you unzipped above.
 
 - The custom *.cfg with modified hyperparams is located in ```/cfg/yolov3-spp-r.cfg```.
 
