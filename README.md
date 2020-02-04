@@ -74,13 +74,21 @@ If Artifical Intelligence Applications are important to you or your business, pl
 
 #### Consulting ideas on which this production-grade project could be forked to for real-word use cases:
 
-- Object Classification in Thermal Images using Convolutional Neural Networks for Search and Rescue Missions with Unmanned Aerial Systems
+ - *Search and Rescue for Public Safety:* Object Classification in Thermal Images using Convolutional Neural Networks for Search and Rescue Missions (SAR) with Unmanned Aerial Systems (UAS).
 
-- Defense and Aerospace: Detecting IEDs (Improvised Explosive Devices) in live combat war zones
+ - *Defense and Aerospace: Detecting IEDs (Improvised Explosive Devices):* in live combat war zones.
+Self-Driving Cars: Autonomous vehicles, personal or commercial.
 
-- Autonomous Cars or Drones, personal or commercial
+ - *Industrial Applications:* Electrical grid monitoring, wind power, and oil refinery monitoring.
+ 
+ - *Improved Breast Cancer Screening & Detection:* Automated analysis of tumor segmentation in thermal images using artificial intelligence increases the accuracy of detecting breast cancer, and enables use in breast cancer screening programs.
 
-- Electrical grid monitoring
+ - *Segmentation of Industrial Material types for automated assembly lines:* Deep Thermal Imaging for material type recognition of Spatial Surface Temperature Patterns (SSTP).
+
+ - *Sense and Detect Active School Shooters:* Ensemble with Doppler signal processing methods for Concealed Weapon Detection in a Human Body by Infrared Imaging.
+ 
+
+ - *NASA/ESA Land Rovers (e.g.; Mars Exploration Rovers (MER) Spirit and Opportunity):* Fork GitHub repo and customize to measure heat signatures from various extraterrestrial objects. This will allow one to determine what materials/composites are in these objects. Also allows (martian) rover to further explore extra-terrestrial planets while identifying objects we cannot see in normal spectrum.
 
 
 
